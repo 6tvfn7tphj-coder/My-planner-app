@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Student & Life Planner</title>
+    <!-- Tailwind CSS (Гоё дизайн оруулах) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR: Хичээлүүд ба Цэс -->
+        <div class="w-64 bg-indigo-900 text-white flex flex-col p-4 space-y-6">
+            <h1 class="text-2xl font-bold tracking-wide">MyWorkspace</h1>
+            
+            <!-- Цаг (Clock Widget) -->
+            <div class="bg-indigo-800 p-3 rounded-lg text-center">
+                <div id="clock" class="text-2xl font-mono font-bold">00:00:00</div>
+                <div class="text-xs text-indigo-300">Өнөөдрийн Цаг</div>
+            </div>
+
+            <!-- Үндсэн Цэс -->
+            <nav class="space-y-2">
+                <button onclick="showTab('journal')" class="w-full text-left py-2 px-3 hover:bg-indigo-700 rounded transition">📖 Өдрийн & Жилийн Тэмдэглэл</button>
+                <button onclick="showTab('calendar')" class="w-full text-left py-2 px-3 hover:bg-indigo-700 rounded transition">📅 Календарь</button>
+                <button onclick="showTab('sheets')" class="w-full text-left py-2 px-3 hover:bg-indigo-700 rounded transition">📊 Хүснэгт (Sheets)</button>
+                <button onclick="showTab('files')" class="w-full text-left py-2 px-3 hover:bg-indigo-700 rounded transition">📁 Файлууд</button>
+                <button onclick="showTab('ai-tools')" class="w-full text-left py-2 px-3 hover:bg-indigo-700 rounded transition">🤖 AI & Орчуулга</button>
+            </nav>
+
+            <!-- Хичээл тус бүрийн хэсэг -->
+            <div class="pt-4 border-t border-indigo-700">
+                <h2 class="text-xs font-semibold text-indigo-300 uppercase tracking-wider mb-2">Хичээлүүд</h2>
+                <div class="space-y-1">
+                    <button onclick="loadSubject('Математик')" class="w-full text-left py-1 px-3 text-sm hover:bg-indigo-800 rounded">📐 Математик</button>
+                    <button onclick="loadSubject('Англи хэл')" class="w-full text-left py-1 px-3 text-sm hover:bg-indigo-800 rounded">🇬🇧 Англи хэл</button>
+                    <button onclick="loadSubject('Солонгос хэл')" class="w-full text-left py-1 px-3 text-sm hover:bg-indigo-800 rounded">🇰🇷 Солонгос хэл</button>
+                    <button onclick="loadSubject('Физик')" class="w-full text-left py-1 px-3 text-sm hover:bg-indigo-800 rounded">⚡ Физик</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT: Үндсэн ажиллах хэсэг -->
+        <div class="flex-1 overflow-y-auto p-8">
+            
+            <!-- 1. Тэмдэглэлийн хэсэг -->
+            <div id="journal" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4">Өдрийн & Жилийн Тэмдэглэл</h2>
+                <input type="date" class="p-2 border rounded mb-4">
+                <textarea class="w-full h-64 p-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Өнөөдөр юу хийсэн бэ? Жилийн зорилгодоо хүрэхэд юу туслав?..."></textarea>
+                <button class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">Хадгалах</button>
+            </div>
+
+            <!-- 2. Календарь -->
+            <div id="calendar" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">2026 Оны Календарь & Төлөвлөгөө</h2>
+                <div class="bg-white p-6 rounded-lg shadow min-h-[300px] flex items-center justify-center border">
+                    <p class="text-gray-500">[Энд Календарийн сүлжээ болон тэмдэглэгээ харагдана]</p>
+                </div>
+            </div>
+
+            <!-- 3. Sheets (Хүснэгт) -->
+            <div id="sheets" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">Хүснэгт ба Тооцоолол</h2>
+                <div class="overflow-x-auto bg-white rounded-lg shadow">
+                    <table class="min-w-full border-collapse border border-gray-200">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="border p-2">Нэр/Даалгавар</th>
+                                <th class="border p-2">Огноо</th>
+                                <th class="border p-2">Төлөв</th>
+                                <th class="border p-2">Оноо/Дүн</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border p-2" contenteditable="true">Даалгавар 1</td>
+                                <td class="border p-2" contenteditable="true">2026-09-10</td>
+                                <td class="border p-2" contenteditable="true">Дууссан</td>
+                                <td class="border p-2" contenteditable="true">100</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. Файл хадгалах -->
+            <div id="files" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">ФайлUpload & Номын сан</h2>
+                <div class="border-2 border-dashed border-gray-300 p-8 text-center rounded-lg bg-white">
+                    <input type="file" id="fileInput" class="hidden">
+                    <label for="fileInput" class="cursor-pointer text-indigo-600 font-semibold">Файл сонгох эсвэл чирч оруулна уу</label>
+                </div>
+            </div>
+
+            <!-- 5. AI & Translate (Орчуулга) -->
+            <div id="ai-tools" class="tab-content hidden">
+                <h2 class="text-2xl font-bold mb-4">AI Туслах & Орчуулагч</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h3 class="font-bold mb-2">AI Асуулт / Туслах</h3>
+                        <textarea id="aiPrompt" class="w-full p-2 border rounded mb-2" rows="4" placeholder="Асуултаа бичнэ үү..."></textarea>
+                        <button onclick="askAI()" class="bg-indigo-600 text-white px-4 py-2 rounded">Асуух</button>
+                        <div id="aiResponse" class="mt-4 p-2 bg-gray-50 border rounded text-sm min-h-[50px]"></div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h3 class="font-bold mb-2">Текст Орчуулах</h3>
+                        <textarea id="translateInput" class="w-full p-2 border rounded mb-2" rows="4" placeholder="Орчуулах текст..."></textarea>
+                        <button onclick="translateText()" class="bg-green-600 text-white px-4 py-2 rounded">Орчуулах</button>
+                        <div id="translateResult" class="mt-4 p-2 bg-gray-50 border rounded text-sm min-h-[50px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Хичээлийн хэсэг -->
+            <div id="subject-view" class="tab-content hidden">
+                <h2 id="subject-title" class="text-2xl font-bold mb-4 text-indigo-900">Хичээл</h2>
+                <div class="bg-white p-4 rounded-lg shadow mb-4">
+                    <h3 class="font-bold mb-2">Энэ хичээлийн тэмдэглэлүүд</h3>
+                    <textarea class="w-full p-3 border rounded h-40" placeholder="Хичээлийн тэмдэглэл..."></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. Цаг ажиллуулах функц
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('clock').textContent = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Цэс солих функц
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+        }
+
+        // 3. Хичээлүүдийг ачааллах функц
+        function loadSubject(subjectName) {
+            showTab('subject-view');
+            document.getElementById('subject-title').textContent = subjectName + " - Хичээлийн хэсэг";
+        }
+
+        // 4. AI ба Орчуулгын API Холболт (Интеграци хийх бэлдэц)
+        async function askAI() {
+            const prompt = document.getElementById('aiPrompt').value;
+            const responseDiv = document.getElementById('aiResponse');
+            responseDiv.innerText = "Анализ хийж байна...";
+            
+            // Энд OpenAI эсвэл Gemini API call хийгдэнэ
+            setTimeout(() => {
+                responseDiv.innerText = "AI Хариулт: '" + prompt + "' асуултад хариулахад бэлэн.";
+            }, 1000);
+        }
+
+        async function translateText() {
+            const text = document.getElementById('translateInput').value;
+            const resultDiv = document.getElementById('translateResult');
+            resultDiv.innerText = "Орчуулж байна...";
+            
+            setTimeout(() => {
+                resultDiv.innerText = "Орчуулга: " + text + " (Орчуулагдсан текст)";
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
